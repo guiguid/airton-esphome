@@ -1,0 +1,48 @@
+# Example configuration for the Airton external component.
+# Replace the git URL with your own repository.
+
+external_components:
+  - source:
+      type: git
+      url: https://github.com/guiguid/airton-esphome
+      ref: main
+      path: components
+    components: [airton]
+
+uart:
+  - id: airton_bus
+    baud_rate: 9600
+    tx_pin: GPIO5
+    rx_pin:
+      number: GPIO4
+      mode:
+        input: true
+        pullup: true
+
+climate:
+  - platform: airton
+    id: airton_climate
+    name: "Airton Climate"
+    uart_id: airton_bus
+
+switch:
+  - platform: airton
+    airton_id: airton_climate
+    display:
+      name: Display
+    ionizer:
+      name: Ionizer
+    health:
+      name: Health
+    sleep:
+      name: Sleep
+    eco:
+      name: Eco
+
+sensor:
+  - platform: airton
+    airton_id: airton_climate
+    total_usage_time:
+      name: Total usage time
+    revision:
+      name: Protocol revision
